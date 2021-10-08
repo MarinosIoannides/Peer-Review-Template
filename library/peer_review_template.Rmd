@@ -1,0 +1,121 @@
+---
+title: "Peer Review Template"
+author: "Marinos Ioannides"
+date: "05/10/2021"
+output: 
+  word_document:
+    toc: true
+    number_sections: true
+    reference_docx: template.docx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+template_manager <- 'Marinos Ioannides' #The individual who is responsible for maintaining this template
+template_manager_email <- 'marinos.ioannides@ons.gov.uk' # The template manager's email for help with this template.
+```
+
+# Template Introduction {-}
+This template is designed to aid peer reviewers in the writing and construction of their reports. It is *not* designed for model creators to cater their design to the demands of this document. 
+
+For guidance on how to use R Markdown, please read this [very useful book](https://bookdown.org/yihui/rmarkdown/) which covers all the tools required and provides an excellent starting point for anybody using R Markdown. Guidance on how to code in R can be found [on the Learning Hub ](https://learninghub.ons.gov.uk/course/view.php?id=538) courtesy of the ONS team.
+
+This template does not replace the need for competent and forensic peer review and can be added to by peer reviewers should they feel the need to. Indeed, if you notice inconsistencies, errors, absences or simply have questions about the template do not hesitate to email the template manager, `r template_manager`, at `r template_manager_email`.
+
+Feel free to delete this section in the final submission to the modelling team.
+
+# Peer Review Introduction
+
+This peer review structure follows a Governance, Documentation, Functionality structure. This structure presents the systemic and structural issues first and foremost within the review, then the errors or absences within the documentation and concludes with the specific findings within the model. This structure emphasizes the systemic factors which are almost always involved in the most severe model errors and shortcomings and aim to highlight factors whose symptoms can be identified within models but whose root cause might otherwise go unnoticed.
+
+This report assumes the reader has a basic understanding of the structure and function of the model. 
+
+```{r Model Governance Overview, include=FALSE}
+#Please supply the relevant answers here rather than in the text below.
+
+SRO_name <- 'Dave Fakename' # Name of the SRO, leave as '' if none named.
+AA_name <- ''  #Name of the analytical assurer, leave as '' if none named.
+Commissioner_name <- '' #Name of the commissioner, leave as '' if none named.
+
+#A function which fills in the names of the various named individuals
+governance_presence_check <- function(role_name, role){
+  return(ifelse(role_name == '',
+                paste('there is no named', role),
+                paste(role_name, ' is the model', role) 
+                ))
+}
+#If there are absences in the governance structure, describes them and indicates the cause for concern.
+absence_warning <- function(){
+  return_string = ''
+  if(SRO_name == ''){
+    return_string <- paste('The absence of an SRO is very concerning for model governance and development. Without such a named individual, it is easy for errors to pass through the system undetected and presents a risk to model develpment. Furthermore, it is hard to see how work can be effectively signed off and reviewed without such a named individual.\n\n', return_string)
+    }
+  if(AA_name == ''){
+    return_string <- paste('The absence of the analytical assurer is problematic. The analytical assurer exists to synthesise and review the assurance work of QA teams and previous peer review. Without such an individual it is easy for concerns raised by peer review to be forgotten or ignored. Their absence within this model and its governance structure is concerning to the peer review team.\n\n', return_string)
+  }
+  if(Commissioner_name == ''){
+    return_string <- paste('The lack of a named commisisoner presents concerns to the peer review team. There should be a well documented and continous back and forth between the commissioner and the SRO to relay important discussions. Without such a named individual, it is difficult to see how the requirements of model users will be understood and satisfied by the modelling team. \n\n', return_string)
+  }
+  return(return_string)
+}
+#How have the individuals within the governance structure interacted?
+#Please fill these in as TRUE or FALSE respectively
+#This can be ignored if there is only one named indviidual from the above roster.
+SRO_Commissioner_meeting <- FALSE
+
+
+
+#Have the various groups been transmitting concerns to eachother correctly?
+governance_interaction <- function(){
+  
+}
+
+```
+
+# Model Governance Overview
+
+There are three key roles which should be filled by named, senior individuals according to modeling best practice, according to the Macpherson review. They are the Senior Responsible Owner (SRO), the Analytical Assurer (AA) and Commissioner.
+In this model `r governance_presence_check(SRO_name, 'SRO')`, `r governance_presence_check(AA_name, 'AA')`, and `r governance_presence_check(Commissioner_name, "commissioner")`. 
+
+`r absence_warning()`
+
+The presence of named individuals comprises one part of model governance. How these individuals interact and govern the model is what ensures that the model is well managed or otherwise.
+
+`r governance_interaction()`
+
+
+``` {r SRO Governance, include = FALSE}
+#This is a list of questions for SROs which should be asked by peer reviewers during their review. The answers to these questions can be placed here and will be automatically included where relevant. Non-answers will create automated concern messages.
+
+
+
+```
+
+## SRO Governance (`r SRO_name`)
+
+
+
+## Analytical Assurer Governance
+
+## Commissioner Governance
+
+
+
+# Documentation Overview
+
+## Assumptions Log
+## Input Quality Review
+## Commissioning Document
+## Sensitivity Analysis
+## User Report
+
+# Model Overview
+
+## Model Rationale
+
+This model attempts to answer the following question:
+model_question
+
+
+
