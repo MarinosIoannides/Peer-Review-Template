@@ -27,7 +27,7 @@ Feel free to delete this section in the final submission to the modelling team.
 
 # Peer Review Introduction
 
-This peer review structure follows a Governance, Documentation, Functionality structure. This structure presents the systemic and structural issues first and foremost within the review, then the errors or absences within the documentation and concludes with the specific findings within the model. This structure emphasizes the systemic factors which are almost always involved in the most severe model errors and shortcomings and aim to highlight factors whose symptoms can be identified within models but whose root cause might otherwise go unnoticed.
+This peer review follows a Governance, Documentation & Functionality structure. This structure presents the systemic and structural issues first and foremost within the review, then the errors or absences within the documentation and concludes with the specific findings within the model. This structure emphasizes the systemic factors which are almost always involved in the most severe model errors and shortcomings and aim to highlight factors whose symptoms can be identified within models but whose root cause might otherwise go unnoticed.
 
 This report assumes the reader has a basic understanding of the structure and function of the model. 
 
@@ -85,21 +85,22 @@ The presence of named individuals comprises one part of model governance. How th
 `r governance_interaction()`
 
 
-``` {r SRO Governance, include = FALSE}
+``` {r Commissioner Governance, include = FALSE}
 #This is a list of questions for SROs which should be asked by peer reviewers during their review. The answers to these questions can be placed here and will be automatically included where relevant. Non-answers will create automated concern messages.
 
 
 
 ```
 
-## SRO Governance (`r SRO_name`)
-
-
-
-## Analytical Assurer Governance
-
 ## Commissioner Governance
 
+The commissioner's role involves clearly explaining what the team should create, why, and what limitations, assumptions and caveats are acceptable.
+
+
+
+## SRO Governance (`r SRO_name`)
+## Analytical Assurer Governance
+## Governance Summary
 
 
 # Documentation Overview
@@ -110,12 +111,21 @@ The presence of named individuals comprises one part of model governance. How th
 ## Sensitivity Analysis
 ## User Report
 
-# Model Overview
+## Documentation Summary
 
-## Model Rationale
+# Functionality Overview 
 
-This model attempts to answer the following question:
-model_question
+## Rationale
+## Code
+## Input quality
+
+# Summary
+
+## Governance
+## Documentation
+## Functionality
+
+# Recommendations
 
 
 
