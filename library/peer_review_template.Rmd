@@ -47,6 +47,15 @@ This peer review follows a Governance, Documentation & Functionality structure. 
 
 This report assumes the reader has a basic understanding of the structure and function of the model. 
 
+``` {r Headline findings, include = FALSE}
+#This section should present a summary page with all the main failures. Have to be sure it doesn't get overcrowded / undercrowded if there are too many or too few problems.
+#May have to create some kind of hierarchy for most concerning / least concerning limitations of system.
+
+```
+#Headline findings (-)
+
+
+
 ```{r Model Governance Overview, include=FALSE}
 #Please supply the relevant answers here rather than in the text below.
 
