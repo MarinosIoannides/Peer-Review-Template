@@ -1,7 +1,7 @@
 ---
 title: "Peer Review Template"
 author: "Marinos Ioannides"
-date: "05/10/2021"
+date: "11/10/2021"
 output: 
   word_document:
     toc: true
@@ -11,6 +11,22 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+#Create all the relevant external datasources here, checking to see if they already exist and not creating them if they do.
+#The idea here is that when you sit down to use the template you have a series of documents with questions that need answering by you, the peer reviewer. 
+#These documents and their answers will then inform the document and how it is filled in and should also inform your questioning.
+
+create_check <- function(file_path, question_dataframe )
+  if(!file.exists(file_path)){ #If the file does not exist, create it using the relevant questions
+  readr::write_csv(question_dataframe, path = file_path)
+  } else {
+    stored_file <- readr::read_csv(file_path) #If the file does exist, compare the questions listed here with the questions it currently has asked
+      if (isTRUE(dplyr::all_equal(stored_file[,1, drop = FALSE], question_dataframe[,1, drop = FALSE])) # Questions asked compared to the questions within this code.
+    ) { 
+    } else {
+      readr::write_csv(question_dataframe, path = file_path)
+    }
+  }
+  
 
 template_manager <- 'Marinos Ioannides' #The individual who is responsible for maintaining this template
 template_manager_email <- 'marinos.ioannides@ons.gov.uk' # The template manager's email for help with this template.
@@ -23,7 +39,7 @@ For guidance on how to use R Markdown, please read this [very useful book](https
 
 This template does not replace the need for competent and forensic peer review and can be added to by peer reviewers should they feel the need to. Indeed, if you notice inconsistencies, errors, absences or simply have questions about the template do not hesitate to email the template manager, `r template_manager`, at `r template_manager_email`.
 
-Feel free to delete this section in the final submission to the modelling team.
+Feel free to delete this section in the final submission to the modeling team.
 
 # Peer Review Introduction
 
@@ -86,26 +102,144 @@ The presence of named individuals comprises one part of model governance. How th
 
 
 ``` {r Commissioner Governance, include = FALSE}
-#This is a list of questions for SROs which should be asked by peer reviewers during their review. The answers to these questions can be placed here and will be automatically included where relevant. Non-answers will create automated concern messages.
+#This is a list of questions for commissioners  which should be asked by peer reviewers during their review. The answers to these questions can be placed here and will be automatically included where relevant. Non-answers will create automated concern messages.
 
+#The peer reviewer must be able to grade the commissioning of this model on the following criteria
 
+com_questions <- c('Team adequatelly resourced?',
+                          "Was enough time allocated to the production of this model?",
+                          "Was adequate time allocated for the quality assurance of this model?",
+                          "Do the commissioner(s) well understand the limitations and caveats of the model?",
+                          "Were assumptions discussed and well udnerstood in advance of model production?",
+                          "Was the model development well planned from the start?",
+                          "Were members of the team able to raise concerns with the commissioner?",
+                          "Was there good communication between the Commissioner and the SRO?")
 
+com_dataframe <- data.frame('Questions' = com_questions, 'Answers' = c('FALSE')) # We assume that all the answers are false unless proven otherwise.
+
+create_check(file_path = "../model_information/com_questions.csv", question_dataframe = com_dataframe) #Checking to see if the file exists and, if it doesn't, it must be created.
+
+commissioner_ans <- readr::read_csv("../model_information/com_questions.csv") #Reading back the answers and checking to see which ones are true and which ones are false to return the failures for the report
+false_ans <-dplyr::filter(.data = commissioner_ans,
+                              Answers == FALSE) #We want to list the shortcomings of the system rather than all the information.
 ```
 
 ## Commissioner Governance
 
-The commissioner's role involves clearly explaining what the team should create, why, and what limitations, assumptions and caveats are acceptable.
+
+`r if(nrow(false_ans)> 0){'This model does not meet the minimum best practice requirements of commissioner governance. \n The most clear failures were as follows \n'}else{'There were no obvious shortcomings noted as a result of commissioner governance.'}` 
+
+`r if(nrow(false_ans)>0){knitr::kable(false_ans[,1:2])}`
+
+`r if(Commissioner_name == ''){"The absence of a commissioner has significantly impaired model development."}`  
+
+``` {r SRO Governance, include = FALSE}
+#This is a list of questions for commissioners  which should be asked by peer reviewers during their review. The answers to these questions can be placed here and will be automatically included where relevant. Non-answers will create automated concern messages.
+
+#The peer reviewer must be able to grade the commissioning of this model on the following criteria
+
+SRO_questions <- c('Did the SRO relay team concerns well to the commissioner(s)?',
+                   'Were the desires of the commissioner(s) well communicated to the modelling team?',
+                   'Has the assumptions log been reviewed and signed off?',
+                   'Is the assumption log up to date and of adequate detail and quality?',
+                   'Have QA concerns been addressed and integrated into the model where relevant?')
+
+SRO_dataframe <- data.frame('Questions' = SRO_questions, 'Answers' = c('FALSE'))
+
+create_check(file_path = "../model_information/SRO_questions.csv", question_dataframe = SRO_dataframe)
+
+SRO_ans <- readr::read_csv("../model_information/SRO_questions.csv")
+false_ans <-dplyr::filter(.data = SRO_ans,
+                              Answers == FALSE)
+```
+## SRO Governance 
 
 
+`r if(nrow(false_ans)> 0){'This model does not meet the minimum best practice requirements of SRO governance. \n The most clear failures were as follows \n'}else{'There were no obvious shortcomings noted as a result of SRO governance.'}` 
 
-## SRO Governance (`r SRO_name`)
+`r if(nrow(false_ans)>0){knitr::kable(false_ans[,1:2])}`
+
+`r if(SRO_name == ''){"The absence of an SRO has significantly impaired model development."}` 
+
+
+``` {r AA Governance, include = FALSE}
+#This is a list of questions for commissioners  which should be asked by peer reviewers during their review. The answers to these questions can be placed here and will be automatically included where relevant. Non-answers will create automated concern messages.
+
+#The peer reviewer must be able to grade the commissioning of this model on the following criteria
+
+AA_questions <- c('Was all formal QA work reviewed by the AA?',
+                  'Were the recommendations of QA work implemented or the lack of implentation justified?',
+                  'Have the changes implemented as a result of QA been signed off by the AA?',
+                  'Was adequate time allocated to perform QA?',
+                  'Was time allocated for the consideration and implementation of QA findings?',
+                  'Has adequate time been allocated to implement the findings of this review?')
+
+AA_dataframe <- data.frame('Questions' = AA_questions, 'Answers' = c('FALSE'))
+
+create_check(file_path = "../model_information/AA_questions.csv", question_dataframe = AA_dataframe)
+
+AA_ans <- readr::read_csv("../model_information/AA_questions.csv")
+false_ans <-dplyr::filter(.data = AA_ans,
+                              Answers == FALSE)
+```
 ## Analytical Assurer Governance
-## Governance Summary
+
+`r if(nrow(false_ans)> 0){'This model does not meet the minimum best practice requirements of AA governance. \n The most clear failures were as follows \n'}else{'There were no obvious shortcomings noted as a result of AA governance.'}` 
+
+`r if(nrow(false_ans)>0){knitr::kable(false_ans[,1:2])}`
+
+`r if(SRO_name == ''){"The absence of an AA has significantly impaired model development."}` 
+
+## Governance Summary 
+
 
 
 # Documentation Overview
 
+Documentation acts not only acts as a useful audit trail for peer reviewers but helps remind modeling teams of the current best practices.If information is not document properly it cannot be proven to ourselves or the taxpayer that the information was gathered, considered and included in the decision making process. Any gaps in documentation are considered to be gaps in the model structure.
+
+``` {r Assumptions log, include = FALSE}
+ #The criteria we deem important for the assumptinos log.
+assumption_criteria <- c( 'Name',
+                                       'Rationale' ,
+                                       'Location',
+                                       'Value(and range)',
+                                       'Error_probability',
+                                       'Sensitivity' ,
+                                       'Risk_score' ,
+                                       'Sign_off(SRO)',
+                                       'Peer_Review_addition') # The criteria we want to know for each assumption
+
+#TODO: Add a way of checking to see if the assumptions log exists.
+fresh_log = data.frame(matrix(nrow = 10, ncol = length(assumption_criteria)))
+colnames(fresh_log) = assumption_criteria
+assumptions_log_path <- "../model_information/assumptions_log.xlsx"
+
+writexl::write_xlsx(fresh_log, assumptions_log_path)
+
+assumptions_log <- readxl::read_excel(assumptions_log_path)
+assumptions_log
+missed_assumptions <- dplyr::filter(.data = assumptions_log,
+                                    Peer_Review_addition  == TRUE)
+missed_assumptions$Name
+```
 ## Assumptions Log
+
+The assumptions log acts as a store of the model's assumptions. In general there can be two kinds of errors in the assumptions log - absent assumptions or incorrectly recorded assumptions.
+
+### Absent Assumptions
+
+Absent assumptions are those assumptions which are detected by the peer reviewer but are not present within the assumptinos log. This implies that there are assumptions which have not been considered by the modelling team and may be causing significant bias within the model structure and function.
+
+The following assumptions were detected by the peer reviewer yet were not listed in the assumptions log.
+
+
+
+
+
+
+### Incorreclty Recorded Assumptions
+
 ## Input Quality Review
 ## Commissioning Document
 ## Sensitivity Analysis
@@ -118,6 +252,7 @@ The commissioner's role involves clearly explaining what the team should create,
 ## Rationale
 ## Code
 ## Input quality
+## Relation to documentation
 
 # Summary
 
